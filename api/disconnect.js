@@ -8,5 +8,12 @@ module.exports = (req, res) => {
     console.log(`✅ Déconnexion du nœud VPN`);
     console.log(`👤 Adresse Wallet: ${walletAddress}`);
 
-    res.json({ success: true, message: "Nœud déconnecté avec succès" });
+    // Mettre à jour l'état du nœud dans vpnState
+    vpnState = {
+        isRunning: false,
+        ip: "0.0.0.0",
+        bandwidth: 0
+    };
+
+    res.json({ success: true, message: "Nœud déconnecté avec succès", ...vpnState });
 };
