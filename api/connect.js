@@ -6,8 +6,8 @@ module.exports = (req, res) => {
     }
 
     const connectionId = Math.random().toString(36).substr(2, 9);
-    const publicIP = "192.168.1.100"; // À récupérer dynamiquement si possible
-    const bandwidth = Math.floor(Math.random() * 100) + 10; // Valeur aléatoire pour tester
+    const publicIP = "192.168.1.100";
+    const bandwidth = Math.floor(Math.random() * 100) + 10;
 
     console.log(`✅ Nouvel enregistrement de nœud VPN`);
     console.log(`👤 Adresse Wallet: ${walletAddress}`);

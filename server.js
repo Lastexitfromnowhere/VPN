@@ -13,7 +13,8 @@ app.use(express.json());
 // Import des routes API
 const connectNode = require("./api/connect");
 const disconnectNode = require("./api/disconnect");
-const nodeRewards = require("./api/nodeRewards"); // Nouvelle route pour les récompenses
+const nodeRewards = require("./api/nodeRewards");
+const networkStats = require("./api/networkStats");
 
 // Import des fonctions utilitaires de récompense
 const { updateNodeStats } = require("./utils/rewardsUtils");
@@ -32,50 +33,11 @@ app.get("/api/status", (req, res) => {
     });
 });
 
-app.post("/api/connect", (req, res) => {
-    const { walletAddress, nodeInfo, isHost } = req.body;
+app.post("/api/connect", connectNode);
+app.post("/api/disconnect", disconnectNode);
 
-    if (!walletAddress || !nodeInfo) {
-        return res.status(400).json({ success: false, error: "Informations du nœud manquantes" });
-    }
-
-    vpnState = {
-        isRunning: true,
-        ip: "192.168.1.100",
-        bandwidth: Math.floor(Math.random() * 100) + 10
-    };
-
-    console.log(`✅ Nouvel enregistrement de nœud VPN`);
-    console.log(`👤 Adresse Wallet: ${walletAddress}`);
-    console.log(`📡 Mode: ${isHost ? "Hébergeur" : "Utilisateur"}`);
-    console.log(`ℹ️ Infos du Nœud: ${nodeInfo}`);
-    console.log(`📡 IP: ${vpnState.ip}, 🚀 Bandwidth: ${vpnState.bandwidth} MB`);
-
-    res.json({
-        success: true,
-        message: "Nœud enregistré avec succès",
-        connectionId: Math.random().toString(36).substr(2, 9),
-        ...vpnState
-    });
-});
-
-app.post("/api/disconnect", (req, res) => {
-    vpnState = {
-        isRunning: false,
-        ip: "0.0.0.0",
-        bandwidth: 0
-    };
-
-    console.log("🛑 VPN arrêté");
-    
-    res.json({
-        success: true,
-        message: "Nœud déconnecté avec succès"
-    });
-});
-
-// Nouvelle route pour récupérer les récompenses d'un nœud
 app.get("/api/node-rewards/:walletAddress", nodeRewards);
+app.get("/api/network-stats", networkStats);
 
 setInterval(() => {
     console.log("This message is printed every 10 seconds");
